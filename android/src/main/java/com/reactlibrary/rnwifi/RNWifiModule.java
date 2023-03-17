@@ -415,8 +415,28 @@ public class RNWifiModule extends ReactContextBaseJavaModule {
         } else {
             stuffWifiConfigurationWithoutEncryption(wifiConfig);
         }
+        
+             List<WifiConfiguration> configuredNetworks = wifi.getConfiguredNetworks();
+            for (WifiConfiguration config : configuredNetworks) {
+                if (config.SSID.equals(wifiConfig.SSID)) {
+                    wifi.disconnect();
+                         if (!wifi.enableNetwork(netId, true)) {
+                            promise.reject(ConnectErrorCodes.unableToConnect.toString(), String.format("Failed to enable network with %s", SSID));
+                            return;
+                        }
+                        if (!wifi.reconnect()) {
+                            promise.reject(ConnectErrorCodes.unableToConnect.toString(), String.format("Failed to reconnect with %s", SSID));
+                            return;
+                        }
+                    promise.resolve("connected");
+                    return;
+                }
+            }
+
 
         int netId = wifi.addNetwork(wifiConfig);
+        wifi.disconnect();
+
         if (netId == -1) {
             promise.reject(ConnectErrorCodes.unableToConnect.toString(), String.format("Could not add or update network configuration with SSID %s", SSID));
             return;
