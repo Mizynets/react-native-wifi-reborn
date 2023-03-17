@@ -420,7 +420,7 @@ public class RNWifiModule extends ReactContextBaseJavaModule {
             for (WifiConfiguration config : configuredNetworks) {
                 if (config.SSID.equals(wifiConfig.SSID)) {
                     wifi.disconnect();
-                         if (!wifi.enableNetwork(netId, true)) {
+                         if (!wifi.enableNetwork(config.networkId, true)) {
                             promise.reject(ConnectErrorCodes.unableToConnect.toString(), String.format("Failed to enable network with %s", SSID));
                             return;
                         }
