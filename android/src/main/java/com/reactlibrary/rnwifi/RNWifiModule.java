@@ -435,7 +435,7 @@ public class RNWifiModule extends ReactContextBaseJavaModule {
 
 
         int netId = wifi.addNetwork(wifiConfig);
-        wifi.disconnect();
+      
 
         if (netId == -1) {
             promise.reject(ConnectErrorCodes.unableToConnect.toString(), String.format("Could not add or update network configuration with SSID %s", SSID));
